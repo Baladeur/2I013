@@ -22,7 +22,7 @@ class BlueStrategy(Strategy):
 	def __init__(self):
 		Strategy.__init__(self,"Blue")
 	def compute_strategy(self,state,id_team,id_player):
-		return SoccerAction(Vector2D(0,0),Vector2D(-1.0,0.0))
+		return SoccerAction(Vector2D(0,0,-3.14/2,0.04),Vector2D(-1.0,0.0))
 
 ## Creation d'une equipe
 red = SoccerTeam(name="Red")
