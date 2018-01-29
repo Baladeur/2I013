@@ -5,33 +5,12 @@ from soccersimulator import settings
 from soccersimulator.settings import *
 import math
 
-
 ## Strategie aleatoire
 class RandomStrategy(Strategy):
     def __init__(self):
         Strategy.__init__(self,"Random")
     def compute_strategy(self,state,id_team,id_player):
-        return SoccerAction(Vector2D.create_random(-0.5,0.5),Vector2D.create_random(-0.5,0.5))
-
-
-class RedStrategy(Strategy):
-	def __init__(self):
-		Strategy.__init__(self,"Red")
-	def compute_strategy(self,state,id_team,id_player):
-		balle=state.ball.position
-		joueur=state.player_state(id_team,id_player).position
-		direction_balle=balle-joueur
-		direction_balle.norm=1
-		distance=math.hypot(balle.x-joueur.x,balle.y-joueur.y)
-		if id_team==1:
-			direction_goal=Vector2D(GAME_WIDTH,GAME_HEIGHT/2)-balle
-		if id_team==2:
-			direction_goal=Vector2D(0,GAME_HEIGHT/2)-balle
-		direction_goal.norm=4.6
-		if distance <= PLAYER_RADIUS+BALL_RADIUS:
-			return SoccerAction(direction_balle,direction_goal)
-		else:
-			return SoccerAction(direction_balle)
+        return SoccerAction(Vector2D.create_random(),Vector2D.create_random())
 
 class BlueStrategy(Strategy):
 	def __init__(self):
@@ -62,14 +41,21 @@ class BlueStrategy(Strategy):
 		else:
 			return SoccerAction(direction_balle)
 
-
-## Creation d'une equipe
-red = SoccerTeam(name="Red")
-blue = SoccerTeam(name="Blue")
-red.add("Red One",RedStrategy()) #Strategie qui ne fait rien
-blue.add("Blue One",RandomStrategy())   #Strategie aleatoire
-
-#Creation d'une partie
-simu = Simulation(red,blue)
-#Jouer et afficher la partie
-show_simu(simu)
+class RedStrategy(Strategy):
+	def __init__(self):
+		Strategy.__init__(self,"Red")
+	def compute_strategy(self,state,id_team,id_player):
+		balle=state.ball.position
+		joueur=state.player_state(id_team,id_player).position
+		direction_balle=balle-joueur
+		direction_balle.norm=1
+		distance=math.hypot(balle.x-joueur.x,balle.y-joueur.y)
+		if id_team==1:
+			direction_goal=Vector2D(GAME_WIDTH,GAME_HEIGHT/2)-balle
+		if id_team==2:
+			direction_goal=Vector2D(0,GAME_HEIGHT/2)-balle
+		direction_goal.norm=4.6
+		if distance <= PLAYER_RADIUS+BALL_RADIUS:
+			return SoccerAction(direction_balle,direction_goal)
+		else:
+			return SoccerAction(direction_balle)
