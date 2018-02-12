@@ -3,7 +3,7 @@ from soccersimulator import Simulation, SoccerTeam, Player, show_simu
 from soccersimulator import Strategy
 from soccersimulator import settings
 from soccersimulator.settings import *
-from modulesocc.strategies import *
+from .modulesocc.strategies import *
 import math
 
 
