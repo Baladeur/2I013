@@ -12,7 +12,7 @@ def dirballe(etat,norme) :
 	vect.norm = norme
 	return vect
 
-def dirpos(etat,norme,pos)
+def dirpos(etat,norme,pos):
 	vect = pos-etat.posjoueur()
 	vect.norm = norme
 	return vect
