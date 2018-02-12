@@ -21,9 +21,9 @@ class ZigzagStrategy(Strategy):
 		e=Etat(state,id_team,id_player)
 		dist=e.distballe()
 		if (dist <= PLAYER_RADIUS+BALL_RADIUS):
-			return SoccerAction(bait(e),deviation(e,3.65))
+			return SoccerAction(dirballe(e,2),deviation(e,3.65))
 		else:
-			return SoccerAction(bait(e))
+			return SoccerAction(dirballe(e,2))
 
 class FonceurStrategy(Strategy):
 	def __init__(self):
