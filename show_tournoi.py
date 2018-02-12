@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 from soccersimulator import show_simu,load_jsonz
 import sys
 

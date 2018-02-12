@@ -1,7 +1,4 @@
-from __future__ import absolute_import
-#import sys
-#sys.path.insert(0, '/users/nfs/Etu1/3520421/2017-2018/2I013/git/modulesocc')
-from strategies import *
+from modulesocc.strategies import *
 from soccersimulator import SoccerTeam
 
 def get_team(nb_players):
