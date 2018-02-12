@@ -6,6 +6,7 @@ from soccersimulator.settings import *
 from modulesocc.strategies import *
 import math
 
+
 ## Creation d'une equipe
 red = SoccerTeam(name="Red")
 blue = SoccerTeam(name="Blue")

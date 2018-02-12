@@ -1,4 +1,4 @@
-from modulesocc.strategies import *
+from .modulesocc.strategies import *
 from soccersimulator import SoccerTeam
 
 def get_team(nb_players):

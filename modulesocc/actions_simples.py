@@ -23,4 +23,3 @@ def dirgoal(etat,norme) :
 	vect.norm=norme
 	return vect
 
-

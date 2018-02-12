@@ -21,9 +21,10 @@ def deviation(etat,norme) :
 	return direction_goal
 
 def bait(etat) :
-	dirb=etat.dirballe(1)
-	if etat.estcentre() and etat.distball()<=2.0 :
-		dirb.norm=0
-		dirb.x=0
-		dirb.y=0
+	if etat.estcentre() :
+		dirb=dirpos(etat,1,etat.posinter())
+	elif etat.balle_def() and etat.prox_balle() :
+		dirb=dirpos(etat,1,etat.posdef())
+	else :
+		dirb=dirballe(etat,1)
 	return dirb
