@@ -4,8 +4,8 @@ from soccersimulator import Simulation, SoccerTeam, Player, show_simu
 from soccersimulator import Strategy
 from soccersimulator import settings
 from soccersimulator.settings import *
-from actions_simples import *
-from etat import *
+from .actions_simples import *
+from .etat import *
 import math
 
 def deviation(etat,norme) :

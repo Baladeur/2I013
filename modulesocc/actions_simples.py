@@ -4,7 +4,7 @@ from soccersimulator import Simulation, SoccerTeam, Player, show_simu
 from soccersimulator import Strategy
 from soccersimulator import settings
 from soccersimulator.settings import *
-from etat import *
+from .etat import *
 import math
 
 def dirballe(etat,norme) :

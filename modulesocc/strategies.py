@@ -4,9 +4,9 @@ from soccersimulator import Simulation, SoccerTeam, Player, show_simu
 from soccersimulator import Strategy
 from soccersimulator import settings
 from soccersimulator.settings import *
-from fonctions_strategies import *
-from actions_simples import *
-from etat import Etat
+from .fonctions_strategies import *
+from .actions_simples import *
+from .etat import Etat
 import math
 
 class RandomStrategy(Strategy):
@@ -22,7 +22,7 @@ class ZigzagStrategy(Strategy):
 		e=Etat(state,id_team,id_player)
 		dist=e.distballe()
 		if (dist <= PLAYER_RADIUS+BALL_RADIUS):
-			return SoccerAction(dirballe(e,1),deviation(e,2))
+			return SoccerAction(dirballe(e,1),deviation(e,3.65))
 		else:
 			return SoccerAction(dirballe(e,1))
 
