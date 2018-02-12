@@ -20,6 +20,13 @@ class Etat(object):
 	def speed(self) :
 		return self.state.ball.vitesse
 
+	def posgoal(self) :
+		if self.id_team==1:
+			pos=Vector2D(GAME_WIDTH,GAME_HEIGHT/2)
+		if self.id_team==2:
+			pos=Vector2D(0,GAME_HEIGHT/2)
+		return pos
+
 	def distballe(self) :
 		posb=self.posballe()
 		posj=self.posjoueur()
@@ -27,11 +34,4 @@ class Etat(object):
 
 	def posdef(self) :
 		posb=self.posballe()
-		vect=Vector2D(0,0)
-		if self.id_team ==1:
-			dirg=Vector2D(GAME_WIDTH,GAME_HEIGHT/2)-self.posballe()
-		if self.id_team ==2:
-			dirg=Vector2D(0,GAME_HEIGHT/2)-self.posballe()
-		posb.x=posb.x+dirg.x/2
-		posb.y=posb.y+dirg.x/2
-		return posb
+		

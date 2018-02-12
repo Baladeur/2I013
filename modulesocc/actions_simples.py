@@ -18,10 +18,8 @@ def dirpos(etat,norme,pos):
 
 def dirgoal(etat,norme) :
 	vect=Vector2D(0,0)
-	if etat.id_team==1:
-		vect=Vector2D(GAME_WIDTH,GAME_HEIGHT/2)-etat.posballe()
-	if etat.id_team==2:
-		vect=Vector2D(0,GAME_HEIGHT/2)-etat.posballe()
+	posg=etat.posgoal()
+	vect=posg-etat.posballe()
 	vect.norm=norme
 	return vect
 

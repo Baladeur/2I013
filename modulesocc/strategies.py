@@ -19,6 +19,10 @@ class ZigzagStrategy(Strategy):
 		Strategy.__init__(self,"Zigzag")
 	def compute_strategy(self,state,id_team,id_player):
 		e=Etat(state,id_team,id_player)
+		if state.step==0 or state.step ==1:
+			posb=e.posballe()
+			print(posb.x)
+			print(posb.y)
 		dist=e.distballe()
 		if (dist <= PLAYER_RADIUS+BALL_RADIUS):
 			return SoccerAction(dirballe(e,1),deviation(e,3.65))
