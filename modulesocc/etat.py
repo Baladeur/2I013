@@ -34,4 +34,7 @@ class Etat(object):
 
 	def posdef(self) :
 		posb=self.posballe()
-		
+
+	def estcentre(self) :
+		posb=self.posballe()
+		return (posb.x==GAME_WIDTH/2 and posb.y==GAME_HEIGHT/2)

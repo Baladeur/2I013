@@ -19,3 +19,11 @@ def deviation(etat,norme) :
 			if balle.y <GAME_HEIGHT/2:
 				direction_goal.angle -= math.radians(25)
 	return direction_goal
+
+def bait(etat) :
+	dirb=etat.dirballe(1)
+	if etat.estcentre() and etat.distball()<=2.0 :
+		dirb.norm=0
+		dirb.x=0
+		dirb.y=0
+	return dirb
