@@ -18,16 +18,23 @@ class ZigzagStrategy(Strategy):
 	def __init__(self):
 		Strategy.__init__(self,"Zigzag")
 	def compute_strategy(self,state,id_team,id_player):
-		e=Etat(state,id_team,id_player)
-		dist=e.distballe()
-		if (dist <= PLAYER_RADIUS+BALL_RADIUS):
-			return SoccerAction(bait(e),deviation(e,4))
-		else:
-			return SoccerAction(bait(e))
+		return zigzag(state,id_team,id_player)
+
+class DefenseStrategy(Strategy):
+	def __init__(self):
+		Strategy.__init__(self,"Defenseur")
+	def compute_strategy(self,state,id_team,id_player):
+		return defense(state,id_team,id_player)
+
+class AttaqueStrategy(Strategy):
+	def __init__(self):
+		Strategy.__init__(self,"Attaquant")
+	def compute_strategy(self,state,id_team,id_player):
+		return attaquant(state,id_team,id_player)
 
 class FonceurStrategy(Strategy):
 	def __init__(self):
-		Strategy.__init__(self,"Zigzag")
+		Strategy.__init__(self,"Fonceur")
 	def compute_strategy(self,state,id_team,id_player):
 		e=Etat(state,id_team,id_player)
 		dist=e.distballe()
@@ -36,9 +43,3 @@ class FonceurStrategy(Strategy):
 		else:
 			return SoccerAction(dirballe(e,2))
 
-"""class DefenseStrategy(Strategy):
-	def __init__(self):
-		Strategy.__init__(self,"Defense")
-	def compute_strategy(self,state,id_team,id_player):
-		e=Etat(state,id_team,id_player)
-		return SoccerAction()"""

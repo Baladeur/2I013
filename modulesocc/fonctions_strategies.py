@@ -7,24 +7,34 @@ from .actions_simples import *
 from .etat import *
 import math
 
-def deviation(etat,norme) :
-	direction_goal=dirgoal(etat,norme)
-	sp=etat.speed()
-	balle=etat.posballe()
-	if sp.x>0:
-		anticipe=balle.y+(direction_goal.x/sp.x)*sp.y
-		if anticipe>=GAME_HEIGHT/2-GAME_GOAL_HEIGHT and anticipe<=GAME_HEIGHT/2+GAME_GOAL_HEIGHT:
-			if balle.y >=GAME_HEIGHT/2:
-				direction_goal.angle += math.radians(25)
-			if balle.y <GAME_HEIGHT/2:
-				direction_goal.angle -= math.radians(25)
-	return direction_goal
-
-def bait(etat) :
-	if etat.estcentre() :
-		dirb=dirpos(etat,1,etat.posinter())
-	elif etat.balle_def() and etat.prox_balle() :
-		dirb=dirpos(etat,1,etat.posdef())
+def zigzag(state,id_team,id_player) :
+	e=Etat(state,id_team,id_player)
+	if e.balle_def(0) and e.adv_balle() :
+		return SoccerAction(dir_posdef(e,0.5))
 	else :
-		dirb=dirballe(etat,1)
-	return dirb
+		if e.can_shoot() :
+			return SoccerAction(dirballe(e,1),deviation(e,4))
+		else :
+			return SoccerAction(dirballe(e,1))
+
+def defense(state,id_team,id_player) :
+	e=Etat(state,id_team,id_player)
+	if not(e.adv_balle()) :
+		if e.can_shoot() :
+			return SoccerAction(dirballe(e,1),passe(e,1,3))
+		else :
+			return SoccerAction(dirballe(e,1))
+		return SoccerAction(dir_posdef(e,0.5))
+	else :
+		return SoccerAction(dir_posdef(e,0.5))
+		
+
+def attaquant(state,id_team,id_player) :
+	e=Etat(state,id_team,id_player)
+	if e.balle_def(10) and e.adv_balle() :
+		return SoccerAction(dir_pospasse(e,0))
+	else :
+		if e.can_shoot() :
+			return SoccerAction(dirballe(e,1),deviation(e,4))
+		else :
+			return SoccerAction(dirballe(e,1))

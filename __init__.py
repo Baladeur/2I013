@@ -2,12 +2,12 @@ from .modulesocc.strategies import *
 from soccersimulator import SoccerTeam
 
 def get_team(nb_players):
-	myteam = SoccerTeam(name="MaTeam")
+	myteam = SoccerTeam(name="1But=1OursPolaireSauvé")
 	if nb_players == 1:
-		myteam.add("Joueur " ,ZigzagStrategy())
+		myteam.add("Joueur" ,ZigzagStrategy())
 	if nb_players == 2:
-		myteam.add("Joueur 1", RandomStrategy())
-		myteam.add("Joueur 2", RandomStrategy())
+		myteam.add("Defenseur", DefenseStrategy())
+		myteam.add("Attaquant", AttaqueStrategy())
 	if nb_players == 4:
 		myteam.add("Joueur 1",RandomStrategy())
 		myteam.add("Joueur 2",RandomStrategy())
