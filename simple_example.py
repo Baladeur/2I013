@@ -10,8 +10,11 @@ import math
 ## Creation d'une equipe
 red = SoccerTeam(name="Red")
 blue = SoccerTeam(name="Blue")
-red.add("Defenseur",ZigzagStrategy())
-blue.add("Attaquant",FonceurStrategy())
+
+red.add("Attaquant",AttaqueStrategy())
+red.add("Defenseur",DefenseStrategy())
+blue.add("Fonceur",FonceurStrategy())
+blue.add("Débile",RandomStrategy())
 
 #Creation d'une partie
 simu = Simulation(red,blue)
