@@ -16,10 +16,38 @@ def fonceur_defaut(state,id_t,id_p, shoot) :
 	else :
 		return SoccerAction(dirballe(e,id_t,id_p, 1, 10))
 
+#dribble basique
 def dribble(state,id_t,id_p) :
 	e=Etat(state)
 	if e.can_shoot(id_t,id_p) :
 		return SoccerAction(dirballe(e,id_t,id_p, 1, 0), dirgoal(e, id_t%2+1, 2, 0.5))
+	else :
+		return SoccerAction(dirballe(e,id_t,id_p, 1, 10))
+
+#dribble évitant les adversaires
+def dribble2(state,id_t,id_p) :
+	e=Etat(state)
+	posj=e.posjoueur(id_t,id_p)
+	posj_adv=e.posjoueur(id_t%2+1,e.proche_balle(id_t%2+1))
+	if e.can_shoot(id_t,id_p) :
+		if not(e.trajectoire_adv(id_t)) :
+			return SoccerAction(dirballe(e,id_t,id_p, 1, 0), dirgoal(e, id_t%2+1, 2, 0.5))			
+		elif e.trajectoire_adv(id_t) and e.trajectoire_goal(id_t) :
+			dir_goal=dirgoal(e, id_t%2+1, 2, 0.2)
+			if posj_adv.y>posj.y :
+				dir_goal.angle += math.radians(40)
+			else :
+				dir_goal.angle -= math.radians(40)
+			return SoccerAction(dirballe(e,id_t,id_p, 1, 0), dir_goal)
+		elif e.trajectoire_adv(id_t) and not(e.trajectoire_goal(id_t)) :
+			dir_goal=dirgoal(e, id_t%2+1, 2, 0.8)
+			if posj_adv.y>posj.y :
+				dir_goal.angle -= math.radians(60)
+			else :
+				dir_goal.angle += math.radians(60)
+			return SoccerAction(dirballe(e,id_t,id_p, 1, 0), dir_goal)
+		else :
+			return SoccerAction(dirballe(e,id_t,id_p, 1, 0), dirgoal(e, id_t%2+1, 2, 0.5))			
 	else :
 		return SoccerAction(dirballe(e,id_t,id_p, 1, 10))
 
@@ -50,12 +78,16 @@ def attaque(state, id_t,id_p, shoot) :
 	e=Etat(state)
 	id_jd=e.proche_joueur(id_t,id_p)
 	id_jb=e.proche_balle(id_t)
-	if id_jd != id_p and id_jb != id_p:
+	posb=e.posballe()
+	posg=e.poscage(id_t)
+	if e.nb_joueurs(id_t)>1 and id_jb != id_p:
 		vect = 	dirpos(e,id_t,id_p,1,e.pospasse(id_t, id_jd, 25))
 		return SoccerAction(vect)
 	else :
-		if e.dist(e.posballe(),e.poscage(id_t%2+1))>=50 :
-			return dribble(state,id_t,id_p)
+		if e.atteindre_balle(id_t,id_p,5) and e.dist(posg,posb)<GAME_WIDTH/2:
+			return SoccerAction(dirpos(e,id_t, id_p, 1, e.posdef(id_t,0.3)))
+		elif e.dist(e.posballe(),e.poscage(id_t%2+1))>=50 and e.dist(posb,Vector2D(GAME_WIDTH/2,GAME_HEIGHT/2))>5 :
+			return dribble2(state,id_t,id_p)
 		else :
 			return fonceur_defaut(state, id_t, id_p, shoot)
 

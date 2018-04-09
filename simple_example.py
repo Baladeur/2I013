@@ -14,7 +14,7 @@ blue = SoccerTeam(name="Blue")
 red.add("Attaquant",AttaqueStrategy())
 red.add("Defenseur",DefenseStrategy())
 blue.add("Fonceur",FonceurStrategy())
-blue.add("Débile",RandomStrategy())
+blue.add("Defenseur",DefenseStrategy())
 
 #Creation d'une partie
 simu = Simulation(red,blue)

@@ -46,11 +46,30 @@ class Etat(object):
 	def can_shoot(self, id_t, id_p)	:
 		return(self.dist(self.posballe(),self.posjoueur(id_t,id_p)) <= PLAYER_RADIUS+BALL_RADIUS)
 
+	#Nombre de joueurs d'une équipe
+	def nb_joueurs(self,id_t) :
+		return self.state.nb_players(id_t)
+
 	#Numéro du joueur de l'équipe donnée le plus proche de la balle
 	def proche_balle(self, id_t) :
 		nb_j=self.state.nb_players(id_t)
 		distmin=math.sqrt(GAME_WIDTH**2+GAME_HEIGHT**2)
 		posb=self.posballe()
+		c=0
+		num_j=0
+		while c<nb_j :
+			posj=self.state.player_state(id_t,c).position
+			distj=self.dist(posb,posj)
+			if distj<distmin :
+				distmin=distj
+				num_j=c
+			c+=1
+		return num_j
+
+	#Numéro du joueur de l'équipe donnée le plus proche de la balle
+	def proche_anticipe(self, id_t,posb) :
+		nb_j=self.state.nb_players(id_t)
+		distmin=math.sqrt(GAME_WIDTH**2+GAME_HEIGHT**2)
 		c=0
 		num_j=0
 		while c<nb_j :
@@ -115,10 +134,26 @@ class Etat(object):
 		posadv=self.state.player_state(t_adv,self.proche_balle(t_adv)).position
 		distj=self.dist(posb,posj)
 		distadv=self.dist(posb,posadv)
-		if distadv<distj :
+		if distadv<=distj :
 			return True
 		else :
 			return False
+
+	#Booléen indiquant si un adversaire va atteindre la balle avant le joueur
+	def atteindre_balle(self,id_t,id_p,nb_t) :
+		t_adv=id_t%2+1
+		posb=self.posballe()
+		vitesse=self.spballe()
+		posb=posb+vitesse*nb_t
+		posj=self.state.player_state(id_t,id_p).position
+		posadv=self.state.player_state(t_adv,self.proche_balle(t_adv)).position
+		distj=self.dist(posb,posj)
+		distadv=self.dist(posb,posadv)
+		if distadv<=distj :
+			return True
+		else :
+			return False
+
 
 	#Booléen indiquant si la balle est dans la partie du terrain correspondant à la proportion
 	#prop = 0.5 	: la balle est dans la moitiée du terrain des cages de l'équipe
@@ -132,4 +167,30 @@ class Etat(object):
 		else :
 			return False
 		
-		
+	#Booléen indiquant si la balle va passer à proximité d'un joueur adverse
+	def trajectoire_adv(self,id_t) :
+		posb=self.posballe()
+		posg=self.poscage(id_t)
+		id_tadv=id_t%2+1
+		k=0
+		vect=posg-posb
+		while k<10:
+			posb=posb+0.05*vect
+			pos_jadv=self.posjoueur(id_tadv,self.proche_anticipe(id_tadv,posb))
+			if self.dist(posb,pos_jadv)<5 :
+				return True
+			k+=1
+		return False
+
+	#Booléen indiquant si la balle va vers les cages
+	def trajectoire_goal(self,id_t) :
+		posb=self.posballe()
+		posg=self.poscage(id_t)
+		speed=self.spballe()
+		distx=posg.x-posb.x
+		k=distx/speed.x
+		anticipe_goal=posb+speed*k
+		if (anticipe_goal.y <= GAME_HEIGHT/2+5) and (anticipe_goal.y >= GAME_HEIGHT/2-5) :
+			return True
+		else :
+			return False
