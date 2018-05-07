@@ -5,6 +5,8 @@ from soccersimulator import settings
 from soccersimulator.settings import *
 import math
 
+
+
 class Etat(object):
 	def __init__(self,state) :
 		self.state = state

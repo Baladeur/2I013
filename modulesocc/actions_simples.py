@@ -6,6 +6,8 @@ from soccersimulator.settings import *
 from .etat import *
 import math
 
+
+
 #Vecteur direction vers la balle avec k tours d'anticipation
 def dirballe(etat, id_t, id_p, norme, k) :
 	vect= etat.posballe()+k*etat.spballe() - etat.posjoueur(id_t,id_p)

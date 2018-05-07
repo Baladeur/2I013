@@ -8,6 +8,8 @@ from .etat import *
 import math
 from random import *
 
+
+
 #Fonce vers la balle, tire toujours à une force = shoot
 def fonceur_defaut(state,id_t,id_p, shoot) :
 	e=Etat(state)

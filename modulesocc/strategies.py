@@ -8,6 +8,8 @@ from .actions_simples import *
 from .etat import Etat
 import math
 
+
+
 class RandomStrategy(Strategy):
     def __init__(self):
         Strategy.__init__(self,"Random")
@@ -21,6 +23,12 @@ class FonceurStrategy(Strategy):
 		return fonceur_defaut(state,id_team,id_player, 4)
 
 class DefenseStrategy(Strategy):
+	def __init__(self):
+		Strategy.__init__(self,"Defenseur")
+	def compute_strategy(self,state,id_team,id_player):
+		return defense(state,id_team,id_player, 3.5)
+
+class DefenseBisStrategy(Strategy):
 	def __init__(self):
 		Strategy.__init__(self,"Defenseur")
 	def compute_strategy(self,state,id_team,id_player):
