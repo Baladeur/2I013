@@ -19,9 +19,9 @@ class FonceurLent(Strategy):
 		#acc.norm=0.1
 		#return SoccerAction(acceleration=acc)
 		if (me.position.distance(ball.position)<(settings.BALL_RADIUS+settings.PLAYER_RADIUS)) and  me.vitesse.norm<0.5:
+			print("tir")
 			return SoccerAction(shootb(e,0))
 		elif (me.position.distance(ball.position)<(settings.BALL_RADIUS+settings.PLAYER_RADIUS)) and  me.vitesse.norm>0.5:
-			print("ralenti")
 			return SoccerAction(ralenti(e,0))
 		else :
 			return SoccerAction(dirpos(e,1,pos_tir(e,0)))

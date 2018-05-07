@@ -23,7 +23,7 @@ def pos_tir(etat, nb) :
 	posb1=etat.posballe()
 	posb=etat.posballs(nb)
 	distance=etat.dist(posb1,posb)
-	facteur=(distance+2.8*settings.BALL_RADIUS)/distance 
+	facteur=(distance+2*settings.BALL_RADIUS)/distance 
 	x=(posb1.x-posb.x)*facteur+posb.x
 	y=(posb1.y-posb.y)*facteur+posb.y
 	return Vector2D(x,y)
@@ -35,5 +35,5 @@ def shootb(etat,nb) :
 #ralenti sur place
 def ralenti(etat,nb) :
 	vect=dirpos(etat,0.4,etat.posjoueur())
-	vect.norm=0.1
+	vect.norm=0.05
 	return vect
