@@ -9,7 +9,6 @@ import math
 from random import *
 
 
-
 #Fonce vers la balle, tire toujours à une force = shoot
 def fonceur_defaut(state,id_t,id_p, shoot) :
 	e=Etat(state)
@@ -113,3 +112,56 @@ def fairepasse(state, id_t, id_p,shoot):
 def arriere(state, id_t, id_p):
 	e=Etat(state)
 	return SoccerAction(dirpos(e,id_t, id_p, 1, e.posdef(id_t,0.4)))
+
+#mini-strategie fonce au centre pour dégager la balle dans le coin supérieur adverse
+def foncer_centre(state, id_t, id_p, shoot):
+	e=Etat(state)
+	if e.can_shoot(id_t,id_p):
+		return SoccerAction(dirballe(e,id_t,id_p,1,0),tirpos(e,coin(e,id_t,id_p),shoot))
+	else:
+		return SoccerAction(dirballe(e,id_t,id_p,1,0))
+
+#mini-strategie se place pour intercepter la balle dégagée par le premier attaquant
+def intercepte_centre(state,id_t,id_p):
+	e=Etat(state)
+	return SoccerAction(dirpos(e,id_t,id_p,1,pos_intercepte_c(e,id_t,id_p)))
+
+#mini-strategie fonce au centre faire perdre du temps
+def tempo_centre(state,id_t,id_p,shoot):
+	e=Etat(state)
+	posg=e.poscage(id_t%2+1)
+	if e.can_shoot(id_t,id_p):
+		return SoccerAction(dirballe(e,id_t,id_p,1,0),tirpos(e,Vector2D(posg.x,GAME_HEIGHT),shoot))
+	else:
+		return SoccerAction(dirballe(e,id_t,id_p,1,10))
+
+#mini-strategie de feinte lors d'un dribble
+def feinte(state,id_t,id_p):
+	e=Etat(state)
+	posb=e.posballe()
+	dirg=dirgoal(e,id_t%2+1,4,0.5)
+	sp=e.spballe()
+	y=posb.y
+	x=posb.x
+	if e.can_shoot(id_t,id_p):
+		if (x>GAME_WIDTH/2 and y>GAME_HEIGHT/2) or  (x<=GAME_WIDTH/2 and y<=GAME_WIDTH/2):
+			if sp.angle+math.radians(5)/(dirg.angle+math.radians(5)) > 1 :
+				dirg.norm=3
+				dirg.angle-= math.radians(60)
+				print("dévie")
+			else :
+				dirg.norm=0.8
+				dirg.angle+=math.radians(30)
+				print("feinte")
+		else :
+			if sp.angle+math.radians(5)/(dirg.angle+math.radians(5)) < 1 :
+				dirg.norm=3
+				dirg.angle-= math.radians(60)
+				print("dévie")
+			else :
+				dirg.norm=0.8
+				dirg.angle+=math.radians(30)
+				print("feinte")
+		return SoccerAction(dirballe(e,id_t,id_p,1,0),dirg)
+	else:
+		return SoccerAction(dirballe(e,id_t,id_p,1,10))

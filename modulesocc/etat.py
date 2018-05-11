@@ -196,3 +196,19 @@ class Etat(object):
 			return True
 		else :
 			return False
+	
+	#Numéro du joueur de l'équipe donnée le plus proche des cages de l'équipe donnée
+	def proche_cage(self, id_t,id_t2) :
+		nb_j=self.state.nb_players(id_t)
+		distmin=math.sqrt(GAME_WIDTH**2+GAME_HEIGHT**2)
+		posg=self.poscage(id_t2)()
+		c=0
+		num_j=0
+		while c<nb_j :
+			posj=self.state.player_state(id_t,c).position
+			distj=self.dist(posg,posj)
+			if distj<distmin :
+				distmin=distj
+				num_j=c
+			c+=1
+		return num_j

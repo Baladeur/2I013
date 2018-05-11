@@ -8,8 +8,6 @@ from .actions_simples import *
 from .etat import Etat
 import math
 
-
-
 class RandomStrategy(Strategy):
     def __init__(self):
         Strategy.__init__(self,"Random")
@@ -69,3 +67,27 @@ class tirStrategy(Strategy):
 		Strategy.__init__(self,"Attaquant")
 	def compute_strategy(self,state,id_team,id_player):
 		return fonceur_defaut(state,id_team,id_player, 4)
+
+class foncer_centreStrategy(Strategy):
+	def __init__(self):
+		Strategy.__init__(self,"Attaquant")
+	def compute_strategy(self,state,id_team,id_player):
+		return foncer_centre(state,id_team,id_player, 10)
+
+class intercepte_centreStrategy(Strategy):
+	def __init__(self):
+		Strategy.__init__(self,"Attaquant")
+	def compute_strategy(self,state,id_team,id_player):
+		return intercepte_centre(state,id_team,id_player)
+
+class tempo_centreStrategy(Strategy):
+	def __init__(self):
+		Strategy.__init__(self,"Attaquant")
+	def compute_strategy(self,state,id_team,id_player):
+		return tempo_centre(state,id_team,id_player, 10)
+
+class feinteStrategy(Strategy):
+	def __init__(self):
+		Strategy.__init__(self,"Attaquant")
+	def compute_strategy(self,state,id_team,id_player):
+		return feinte(state,id_team,id_player)
