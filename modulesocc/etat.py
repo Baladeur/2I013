@@ -184,7 +184,7 @@ class Etat(object):
 			k+=1
 		return False
 
-	#Booléen indiquant si la balle va vers les cages
+	#Booléen indiquant si la balle va vers les cages de la team
 	def trajectoire_goal(self,id_t) :
 		posb=self.posballe()
 		posg=self.poscage(id_t)
@@ -192,7 +192,7 @@ class Etat(object):
 		distx=posg.x-posb.x
 		k=distx/speed.x
 		anticipe_goal=posb+speed*k
-		if (anticipe_goal.y <= GAME_HEIGHT/2+5) and (anticipe_goal.y >= GAME_HEIGHT/2-5) :
+		if (anticipe_goal.y <= GAME_HEIGHT/2+GAME_GOAL_HEIGHT/2) and (anticipe_goal.y >= GAME_HEIGHT/2-GAME_GOAL_HEIGHT/2) :
 			return True
 		else :
 			return False
@@ -201,7 +201,7 @@ class Etat(object):
 	def proche_cage(self, id_t,id_t2) :
 		nb_j=self.state.nb_players(id_t)
 		distmin=math.sqrt(GAME_WIDTH**2+GAME_HEIGHT**2)
-		posg=self.poscage(id_t2)()
+		posg=self.poscage(id_t2)
 		c=0
 		num_j=0
 		while c<nb_j :
@@ -212,3 +212,5 @@ class Etat(object):
 				num_j=c
 			c+=1
 		return num_j
+	
+	

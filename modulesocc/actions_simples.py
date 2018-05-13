@@ -82,23 +82,89 @@ def pos_intercepte_c(etat, id_t,id_p) :
 		return Vector2D(GAME_WIDTH/2,5*GAME_HEIGHT/6)
 
 #Vecteur tir de la balle vers les cages de la team indiquée en essayant d'éviter le goal adverse
-def tirgoal(etat, id_t, norme) :
-	posg=etat.poscage(id_t)
+def tirgoal(etat, id_t, id_p, norme) :
+	posg=etat.poscage(id_t%2+1)
 	posb=etat.posballe()
-	posj_adv=etat.posjoueur(id_t,etat.proche_cage(id_t,id_t2))
+	posj_adv=etat.posjoueur(id_t%2+1,etat.proche_cage(id_t%2+1,id_t%2+1))
+	posj=etat.posjoueur(id_t,id_p)
 	y=posj_adv.y
 	hg=(GAME_HEIGHT-GAME_GOAL_HEIGHT)/2
 	if etat.dist(posj_adv,posg)>=hg and not(etat.trajectoire_adv(id_t%2+1)) :
-		return dirgoal(etat,id_t,norme)
+		return dirgoal(etat,id_t%2+1,norme,0.5)
 	else :
 		if y<posg.y+hg/6 and y>posg.y-hg :
-			if random() > 0.5 :
-				vect=Vector2D(posg.x-posb.x,posg.y+hg/3-posb.y)
+			if posj.y>y:
+				vect=Vector2D(posg.x-posb.x,posg.y+hg/12-posb.y)
 			else :
-				vect=Vector2D(posg.x-posb.x,posg.y-hg/3-posb.y)
+				vect=Vector2D(posg.x-posb.x,posg.y-hg/12-posb.y)
 		elif y>posg.y+hg/6 :
-				vect=Vector2D(posg.x-posb.x,posg.y-hg/3-posb.y)
+				vect=Vector2D(posg.x-posb.x,posg.y-hg/12-posb.y)
 		else :
-				vect=Vector2D(posg.x-posb.x,posg.y+hg/3-posb.y)
+				vect=Vector2D(posg.x-posb.x,posg.y+hg/12-posb.y)
 	vect.norm=norme
 	return vect
+
+	
+#Position de la passe defensive
+def pos_passe_def(etat, id_t):
+	posg=etat.poscage(id_t)
+	posj_adv=etat.posjoueur(id_t%2+1, etat.proche_cage(id_t%2+1, id_t))
+	dist=posg.distance(posj_adv)
+	pos_passe=posj_adv.copy()
+	if posj_adv.y>GAME_HEIGHT/2 :
+		pos_passe.y -= 0.8*dist
+		vect=pos_passe-posj_adv
+		if posj_adv.x>GAME_WIDTH/2 :
+			vect.angle+=math.radians(15)
+		else:
+			vect.angle-=math.radians(15)
+	else :
+		pos_passe.y += 0.8*dist
+		vect=pos_passe-posj_adv
+		if posj_adv.x>GAME_WIDTH/2 :
+			vect.angle-=math.radians(15)
+		else:
+			vect.angle+=math.radians(15)
+	return posj_adv+vect
+	
+#position de la passe en attaque
+def pos_passe_attaque(etat,id_t):
+	posg=etat.poscage(id_t%2+1)
+	posj_adv=etat.posjoueur(id_t%2+1, etat.proche_cage(id_t%2+1, id_t%2+1))
+	posj=etat.posjoueur(id_t, etat.proche_cage(id_t, id_t%2+1))
+	dist=posg.distance(posj_adv)
+	pos_passe=posj_adv.copy()
+	hg=(GAME_HEIGHT-GAME_GOAL_HEIGHT)/2
+	if dist>15 and dist<GAME_WIDTH/4:
+		if posj_adv.y>GAME_HEIGHT/2 :
+			pos_passe.y -= 0.5*dist
+			vect=pos_passe-posj_adv
+			if posj_adv.x>GAME_WIDTH/2 :
+				vect.angle-=math.radians(15)
+			else:
+				vect.angle+=math.radians(15)
+		else :
+			pos_passe.y += 0.5*dist
+			vect=pos_passe-posj_adv
+			if posj_adv.x>GAME_WIDTH/2 :
+				vect.angle+=math.radians(15)
+			else:
+				vect.angle-=math.radians(15)
+		return posj_adv+vect
+	elif dist>=GAME_WIDTH/4:
+		if posg.x==0:
+			return Vector2D(25,posg.y)
+		else:
+			return Vector2D(posg.x-25,posg.y)
+	else:
+		if posg.x==0:
+			pos_passe.x=30
+		else:
+			pos_passe.x=posg.x-30
+		if posj.y>posj_adv.y:
+			pos_passe.y=posj_adv.y+GAME_GOAL_HEIGHT/3
+		else :
+			pos_passe.y=posj_adv.y-GAME_GOAL_HEIGHT/3
+		return pos_passe
+		
+		
