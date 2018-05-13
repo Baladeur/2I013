@@ -9,7 +9,7 @@ def get_team(nb_players):
 		myteam.add("Defenseur", DefenseStrategy())
 		myteam.add("Attaquant", AttaqueStrategy())
 	if nb_players == 4:
-		myteam.add("Attaquant",AttaqueNewStrategy())
+		myteam.add("Attaquant",AttaqueStrategy())
 		myteam.add("Support",AttaqueStrategy())
 		myteam.add("Defense",DefenseStrategy())
 		myteam.add("Goal",M_goal_intercepteStrategy())
