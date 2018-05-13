@@ -91,3 +91,33 @@ class feinteStrategy(Strategy):
 		Strategy.__init__(self,"Attaquant")
 	def compute_strategy(self,state,id_team,id_player):
 		return feinte(state,id_team,id_player)
+
+
+class AllerGoalStrategy(Strategy):
+        def __init__(self):
+                Strategy.__init__(self,"Aller goal")
+        def compute_strategy(self,state,id_team,id_player):
+                return aller_goal(state,id_team,id_player)
+
+class AllerAttaqueStrategy(Strategy):
+        def __init__(self):
+                Strategy.__init__(self,"Aller attaque")
+        def compute_strategy(self,state,id_team,id_player):
+                return aller_attaque(state,id_team,id_player, 30)
+
+class AllerDefenseStrategy(Strategy):
+        def __init__(self):
+                Strategy.__init__(self,"Aller defense")
+        def compute_strategy(self,state,id_team,id_player):
+                return aller_defense(state,id_team,id_player, 30)
+
+class GoalStrategy(Strategy):
+        def __init__(self):
+                Strategy.__init__(self,"Goal")
+        def compute_strategy(self,state,id_team,id_player):
+                return goal(state,id_team,id_player)
+
+
+
+
+

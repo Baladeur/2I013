@@ -165,3 +165,52 @@ def feinte(state,id_t,id_p):
 		return SoccerAction(dirballe(e,id_t,id_p,1,0),dirg)
 	else:
 		return SoccerAction(dirballe(e,id_t,id_p,1,10))
+
+
+
+#mini-strategie va se positionner dans les cages
+def aller_goal(state, id_t, id_p):
+        e=Etat(state)
+        return SoccerAction(dirpos(e, id_t, id_p, 5, e.poscage(id_t)))
+
+#mini_strategie qui va faire sortir le goal de sa cage pour intercepter la balle
+def sortir_goal(state, id_t, id_p):
+        e=Etat(state)
+        if (e.can_shoot(id_t, id_p)):
+                return SoccerAction(dirballe(e,id_t,id_p, 3, 0), dirgoal(e,id_t%2+1, 5, 0.5))
+        return SoccerAction(dirballe(e, id_t, id_p, 3, 0))
+
+#strategie qui va intercepter la balle quand elle s'approche des goals
+def goal(state, id_t, id_p):
+        e=Etat(state)
+        if e.balle_def(id_t, 0.10):
+                return sortir_goal(state, id_t, id_p )
+        else :
+                pos = e.posballe()+e.spballe()*5
+                pos.x=e.poscage(id_t).x
+                if e.balle_def(id_t, 0.30) and pos.y<GAME_HEIGHT/2+GAME_GOAL_HEIGHT/2 and pos.y>GAME_HEIGHT/2-GAME_GOAL_HEIGHT/2:
+                        return dirpos(e, id_t, id_p, 5, pos)
+                else:
+                        return aller_goal(state, id_t, id_p)
+                        
+#mini-strategie qui va se positionner en position d'ataque
+#decalage correspond à la distance entre l'attaquant et les cages
+def aller_attaque(state, id_t, id_p, decalage):
+        e=Etat(state)
+        pos_att= e.poscage(id_t%2+1)
+        if pos_att.x==0:
+                pos_att.x+=decalage
+        elif pos_att.x==GAME_WIDTH:
+                pos_att.x-=decalage
+        return SoccerAction(dirpos(e, id_t, id_p, 5, pos_att))
+
+#mini-strategie qui va se positionner en défense
+def aller_defense(state, id_t, id_p, decalage):
+        e=Etat(state)
+        pos_def= e.poscage(id_t)
+        if pos_def.x==0:
+                pos_def.x+=decalage
+        elif pos_def.x==GAME_WIDTH:
+                pos_def.x-=decalage
+        return SoccerAction(dirpos(e, id_t, id_p, 5, pos_def))
+
