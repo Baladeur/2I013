@@ -9,10 +9,10 @@ def get_team(nb_players):
 		myteam.add("Defenseur", DefenseStrategy())
 		myteam.add("Attaquant", AttaqueStrategy())
 	if nb_players == 4:
-		myteam.add("Joueur 1",AttaqueStrategy())
-		myteam.add("Joueur 2",AttaqueStrategy())
-		myteam.add("Joueur 3",DefenseStrategy())
-		myteam.add("Joueur 4",DefenseStrategy())
+		myteam.add("Attaquant",AttaqueNewStrategy())
+		myteam.add("Support",AttaqueStrategy())
+		myteam.add("Defense",DefenseStrategy())
+		myteam.add("Goal",M_goal_intercepteStrategy())
 	return myteam	
 
 def get_team_challenge(num):
